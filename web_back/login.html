@@ -9,6 +9,8 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- 引入bootstrap文件 -->
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -28,9 +30,86 @@
                 <input type="submit" class="input_sub" value="登 录">
             </form>
         </div>
-
-    </div> 
+    </div>
+    <!-- bootstrap 模态框插件 -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    输入错误,请重新输入!!!
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
+<!-- 引入booststrap文件和jQuery文件 -->
+<script src="./js/jquery-1.12.4.min.js"></script>
+<script src="./js/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(function () {
+        $('.input_sub').click(function (event) {
+            // 阻止事件默认行为
+            event.preventDefault();
+            // 获取账号和密码
+            var inputTxt = $('.input_txt').val().trim();
+            var inputPw = $('.input_pass').val().trim();
+            console.log(inputTxt, inputPw);
+
+            // 判断用户输入内容是否为空
+            if (inputTxt == '' || inputPw == '') {
+                    $('.modal-body').text('用户名和密码不能为空');
+                // 输入空就提示用户重新输入
+                $('.modal').modal();
+                return;
+            } else {
+                //调用接口 
+                $.ajax({
+                    url: 'https://autumnfish.cn/big/admin/login',
+                    type: 'post',
+                    data: {
+                        user_name: inputTxt,
+                        password: inputPw
+                    },
+                    success: function (backData) {
+                        console.log(backData);
+
+                        if (backData.code == 200) {
+                            // 如果输入正确就跳转到主页
+                            $('.modal-body').text('Wellcome--大事件');
+                            $('.modal').modal();
+                            setInterval(function(){
+                                window.location.href = './index.html';
+                            },1000);
+                      
+                        }else if(backData.code == 400){
+                            // 输入错误提示用户
+                            $('.modal-body').text('用户名和密码错误,请重新输入');
+                            $('.modal').modal();
+                        }
+                    }
+
+                })
+ 
+            }
+
+
+
+
+
+
+
+        })
+
+
+    })
+
+</script>
 
 </html>
