@@ -148,7 +148,7 @@
                 $('.btn-logout').click(function () {
                     // 调用登出接口
                     $.ajax({
-                        url: ' https://autumnfish.cn/big/admin/logout',
+                        url: ' http://localhost:8000/admin/logout',
                         type: 'post',
                         success: function (backData) {
                             if (backData.code == 200) {
@@ -165,7 +165,7 @@
 
             // 获取用户信息 修改头像和名称
             $.ajax({
-                url: 'https://autumnfish.cn/big/admin/getuser',
+                url: 'http://localhost:8000/admin/getuser',
                 type: 'get',
                 success: function(backData){
                     console.log(backData);
